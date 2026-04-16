@@ -2,7 +2,8 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>Personal 3X Leverage Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Check - Bull 3X Candlestick</title>
     <style>
       body,
       html {
@@ -20,44 +21,73 @@
         grid-template-rows: 1fr 1fr;
         height: 100vh;
         width: 100vw;
-        gap: 2px;
+        gap: 4px;
         background-color: #2a2e39;
       }
       .chart-wrapper {
         position: relative;
         width: 100%;
         height: 100%;
+        background-color: #131722;
+        overflow: hidden;
       }
+
       .custom-label {
         position: absolute;
-        top: 10px;
-        right: 120px;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
         z-index: 10;
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 1.1vw;
-        font-weight: bold;
-        text-shadow: 0 0 5px #000;
+        color: #ffffff;
+        font-size: 2.2vw;
+        font-weight: 900;
+        text-align: center;
+        text-shadow: 0 0 10px #000;
         pointer-events: none;
+      }
+      .watermark {
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 8vw;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.05);
+        white-space: nowrap;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .chart-box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="chart-wrapper">
-        <div class="custom-label">半導体 Bull (3x)</div>
-        <div id="chart-1" style="height: 100%"></div>
+        <div class="custom-label">S&P 500 x3 (SPXL)</div>
+        <div class="watermark">SPXL (3X)</div>
+        <div id="widget-1" class="chart-box"></div>
       </div>
       <div class="chart-wrapper">
-        <div class="custom-label">S&P500 Bull (3x)</div>
-        <div id="chart-2" style="height: 100%"></div>
+        <div class="custom-label">半導体 x3 (SOXL)</div>
+        <div class="watermark">SOXL (3X)</div>
+        <div id="widget-2" class="chart-box"></div>
       </div>
       <div class="chart-wrapper">
-        <div class="custom-label">NASDAQ100 Bull (3x)</div>
-        <div id="chart-3" style="height: 100%"></div>
+        <div class="custom-label">NASDAQ 100 x3 (TQQQ)</div>
+        <div class="watermark">TQQQ (3X)</div>
+        <div id="widget-3" class="chart-box"></div>
       </div>
       <div class="chart-wrapper">
-        <div class="custom-label">Technology Bull (3x)</div>
-        <div id="chart-4" style="height: 100%"></div>
+        <div class="custom-label">テクノロジー x3 (TECL)</div>
+        <div class="watermark">TECL (3X)</div>
+        <div id="widget-4" class="chart-box"></div>
       </div>
     </div>
 
@@ -66,32 +96,26 @@
       src="https://s3.tradingview.com/tv.js"
     ></script>
     <script type="text/javascript">
-      function createAdvancedWidget(id, symbol) {
-        new TradingView.widget({
-          autosize: true,
-          symbol: symbol,
-          interval: 'D',
-          range: '1Y' /* 表示期間1年 */,
-          timezone: 'Asia/Tokyo',
-          theme: 'dark',
-          style: '1' /* ローソク足 */,
+      function createStableWidget(containerId, symbol) {
+        new TradingView.MediumWidget({
+          symbols: [['', symbol + '|1Y']],
+          chartOnly: false,
+          width: '100%',
+          height: '100%',
           locale: 'ja',
-          toolbar_bg: '#131722',
-          enable_publishing: false,
-          hide_top_toolbar: false,
-          hide_legend: false,
-          save_image: false,
-          container_id: id,
-          backgroundColor: '#131722',
-          studies: ['MAExp@tv-basicstudies'],
+          colorTheme: 'dark',
+          autosize: true,
+          showVolume: false,
+          chartType: 'candlesticks' /* ここを area から candlesticks に変更 */,
+          container_id: containerId,
+          backgroundColor: 'rgba(19, 23, 34, 0)',
         });
       }
 
-      // すべてBATS経由の3倍レバレッジ銘柄に設定
-      createAdvancedWidget('chart-1', 'BATS:SOXL');
-      createAdvancedWidget('chart-2', 'BATS:SPXL');
-      createAdvancedWidget('chart-3', 'BATS:TQQQ');
-      createAdvancedWidget('chart-4', 'BATS:TECL');
+      createStableWidget('widget-1', 'BATS:SPXL');
+      createStableWidget('widget-2', 'BATS:SOXL');
+      createStableWidget('widget-3', 'BATS:TQQQ');
+      createStableWidget('widget-4', 'BATS:TECL');
     </script>
   </body>
 </html>
