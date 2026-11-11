@@ -125,12 +125,14 @@
           fontFamily: 'Arial, sans-serif',
           fontSize: '14',
           chartType: 'area',
+          isTransparent: true,
           backgroundColor: 'rgba(19, 23, 34, 0)',
         };
 
         const iframe = document.createElement('iframe');
+        // 正規のエンドポイント「symbol-overview」を指定
         iframe.src =
-          'https://widgets.tradingview-widget.com/embed-widget/medium-symbol-overview/?locale=ja#' +
+          'https://widgets.tradingview-widget.com/embed-widget/symbol-overview/?locale=ja#' +
           encodeURIComponent(JSON.stringify(config));
 
         const container = document.getElementById(containerId);
